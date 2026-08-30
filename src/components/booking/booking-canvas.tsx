@@ -1048,7 +1048,7 @@ function StayView({
   checkOut,
   minDate,
   adults,
-  children,
+  childCount,
   guestOpen,
   onToggleGuests,
   onDateChange,
@@ -1065,7 +1065,7 @@ function StayView({
   checkOut: string;
   minDate: string;
   adults: number;
-  children: number;
+  childCount: number;
   guestOpen: boolean;
   onToggleGuests: () => void;
   onDateChange: (value: {
@@ -1176,7 +1176,7 @@ function StayView({
 
           <GuestSelector
             adults={adults}
-            childCount={children}
+            childCount={childCount}
             maxAdults={4}
             maxChildren={2}
             open={guestOpen}
