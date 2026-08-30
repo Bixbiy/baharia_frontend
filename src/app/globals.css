@@ -1,26 +1,316 @@
 @import "tailwindcss";
 
+/* =========================================================
+   BAHARIA DESIGN TOKENS
+   ========================================================= */
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* -------------------------------------------------------
+     Core Baharia palette
+     ------------------------------------------------------- */
+
+  --baharia-sand: #f4ede4;
+  --baharia-bone: #fbf8f4;
+  --baharia-coral-stone: #e8d4c0;
+  --baharia-deep-indigo: #1b2a4a;
+  --baharia-terracotta: #b85c38;
+  --baharia-brass: #c9a15c;
+  --baharia-charcoal: #2a2622;
+
+  --baharia-muted: #6f665f;
+  --baharia-border: rgb(42 38 34 / 14%);
+
+  /* -------------------------------------------------------
+     Semantic colors
+     ------------------------------------------------------- */
+
+  --background: var(--baharia-sand);
+  --surface: var(--baharia-bone);
+  --foreground: var(--baharia-charcoal);
+
+  --dark-surface: var(--baharia-deep-indigo);
+  --dark-foreground: var(--baharia-bone);
+
+  /* -------------------------------------------------------
+     Layout
+     ------------------------------------------------------- */
+
+  --container-content: 1440px;
+  --container-wide: 1600px;
+  --container-reading: 720px;
+
+  /* -------------------------------------------------------
+     Editorial shape
+     ------------------------------------------------------- */
+
+  --radius-editorial-sm: 4px;
+  --radius-editorial-md: 8px;
+
+  /* -------------------------------------------------------
+     Motion
+     ------------------------------------------------------- */
+
+  --duration-fast: 180ms;
+  --duration-base: 280ms;
+  --duration-slow: 600ms;
+
+  --ease-editorial: cubic-bezier(0.22, 1, 0.36, 1);
 }
+
+/* =========================================================
+   TAILWIND v4 THEME
+   ========================================================= */
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  /* Colors
+     These names intentionally stay unchanged.
+  */
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  --color-sand: var(--baharia-sand);
+  --color-bone: var(--baharia-bone);
+  --color-coral-stone: var(--baharia-coral-stone);
+  --color-deep-indigo: var(--baharia-deep-indigo);
+  --color-terracotta: var(--baharia-terracotta);
+  --color-brass: var(--baharia-brass);
+  --color-charcoal: var(--baharia-charcoal);
+
+  --color-muted: var(--baharia-muted);
+  --color-border: var(--baharia-border);
+
+  /* Typography */
+
+  --font-display: var(--font-fraunces);
+  --font-body: var(--font-manrope);
+
+  /* Responsive breakpoints */
+
+  --breakpoint-xs: 30rem;
+  --breakpoint-sm: 40rem;
+  --breakpoint-md: 48rem;
+  --breakpoint-lg: 64rem;
+  --breakpoint-xl: 80rem;
+  --breakpoint-2xl: 90rem;
+
+  /* 8px spacing system */
+
+  --spacing: 0.5rem;
+
+  /* Motion easing */
+
+  --ease-editorial: var(--ease-editorial);
+
+  /* Animation */
+
+  --animate-baharia-fade-in:
+    baharia-fade-in 800ms var(--ease-editorial) both;
+
+  @keyframes baharia-fade-in {
+    from {
+      opacity: 0;
+      transform: translateY(18px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 }
 
+/* =========================================================
+   BASE
+   ========================================================= */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--background);
+  color-scheme: light;
+  scroll-behavior: smooth;
+
+  scrollbar-width: thin;
+  scrollbar-color: rgb(27 42 74 / 45%) transparent;
+}
+
 body {
+  min-height: 100vh;
+  margin: 0;
+
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+
+  font-family: var(--font-body);
+  font-size: 17px;
+  line-height: 1.65;
+
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+.booking-mineral-surface {
+  background-color: #ebe4d9;
+  background-image:
+    radial-gradient(
+      rgb(42 38 34 / 2.8%) 0.7px,
+      transparent 0.7px
+    ),
+    radial-gradient(
+      circle at 20% 20%,
+      rgb(201 161 92 / 5.5%),
+      transparent 32%
+    ),
+    linear-gradient(
+      135deg,
+      #eee7dc 0%,
+      #e9e1d5 48%,
+      #f1ebe2 100%
+    );
+  background-size: 5px 5px, auto, auto;
+}
+
+/* Light editorial treatment for the reservation journey. */
+.booking-light {
+  background: #fff;
+  color: var(--baharia-charcoal);
+}
+
+.booking-light [class*="text-bone"] {
+  color: var(--baharia-charcoal) !important;
+}
+
+.booking-light [class*="border-bone"] {
+  border-color: rgb(42 38 34 / 14%) !important;
+}
+
+.booking-light [class*="bg-bone"] {
+  background-color: rgb(255 255 255 / 86%) !important;
+}
+
+.booking-light button[class*="bg-bone"],
+.booking-light a[class*="bg-bone"] {
+  background-color: var(--baharia-deep-indigo) !important;
+  color: var(--baharia-bone) !important;
+}
+
+/* A selected room keeps its dark, high-contrast action treatment inside the
+   otherwise light reservation canvas. This explicit exception prevents the
+   light-surface helper above from changing its intended foreground colour. */
+.booking-light .booking-dark-choice {
+  color: var(--baharia-bone) !important;
+}
+
+.booking-light input,
+.booking-light textarea {
+  background-color: #fff !important;
+  color: var(--baharia-charcoal) !important;
+}
+
+/* =========================================================
+   TYPOGRAPHY
+   ========================================================= */
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+
+  font-family: var(--font-display);
+  font-weight: 500;
+  line-height: 1.05;
+  letter-spacing: -0.025em;
+}
+
+p {
+  margin: 0;
+}
+
+/* =========================================================
+   MEDIA
+   ========================================================= */
+
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+img {
+  height: auto;
+}
+
+/* =========================================================
+   FORMS / INTERACTION
+   ========================================================= */
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: default;
+}
+
+button:disabled,
+[aria-disabled="true"] {
+  opacity: 0.7;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* =========================================================
+   ACCESSIBILITY
+   ========================================================= */
+
+::selection {
+  background: var(--baharia-deep-indigo);
+  color: var(--baharia-bone);
+}
+
+:focus-visible {
+  outline: 2px solid var(--baharia-brass);
+  outline-offset: 4px;
+}
+
+/* Keep anchored sections visible beneath the fixed site header. */
+[id] {
+  scroll-margin-top: 6rem;
+}
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
